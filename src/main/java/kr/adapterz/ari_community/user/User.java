@@ -1,0 +1,51 @@
+package kr.adapterz.ari_community.user;
+
+import jakarta.persistence.*;
+import kr.adapterz.ari_community.comment.Comment;
+import kr.adapterz.ari_community.post.Post;
+import kr.adapterz.ari_community.post_like.Post_like;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+public class User {
+
+    @Id
+    @GeneratedValue
+    private Integer user_id;
+
+    @Column(nullable = false, unique=true)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false, unique=true)
+    private String nickname;
+
+    @Column(nullable = false)
+    private String profile_url;
+
+    // 단방향 연관관계, post 테이블에 FK(user_id) 생성
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private List<Post> posts = new ArrayList<>();
+
+    // 단방향 연관관계, comment 테이블에 FK(user_id) 생성
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private List<Comment> comments = new ArrayList<>();
+
+    // 단방향 연관관계, post_like 테이블에 FK(user_id) 생성
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private List<Post_like> post_likes = new ArrayList<>();
+
+}
