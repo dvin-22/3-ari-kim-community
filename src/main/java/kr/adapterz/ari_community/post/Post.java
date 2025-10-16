@@ -14,8 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor
 public class Post {
 
@@ -33,10 +32,12 @@ public class Post {
     @Column(nullable = false)
     private String title;
 
+    // 수정 여부: 기본값 0, 게시물 수정시 0->1
     @Column(nullable = false)
     @ColumnDefault("0")
     private Boolean is_modified;
 
+    // 작성 시각: yyyy-mm-dd hh:mm:ss
     @Column(nullable = false)
     private LocalDateTime created_at;
 

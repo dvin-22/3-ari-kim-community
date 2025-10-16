@@ -18,9 +18,13 @@ import java.math.BigInteger;
 public class PostService {
 
     private final UserRepository userRepository;
-
     private final PostRepository postRepository;
 
+    /* 게시물 목록 조회
+    최초 조회시 post_id 오름차순에서 1-20번째 게시물을 가져옴
+    다음 페이지 조회시 post_id 오름차순에서 cursorId(마지막으로 조회한 게시물) 이후 1-20번째 게시물을 가져옴
+    가져온 게시물들을 DTO로 변환하여 반환
+     */
     public Slice<GetPostListResponse> getPostList(BigInteger cursorId, Integer size) {
         Slice<Post> postSlice;
         Pageable pageable = PageRequest.of(0, size);
@@ -34,36 +38,46 @@ public class PostService {
         return postSlice.map(post -> new GetPostListResponse(post));
     }
 
+    /* 게시물 상세 조회
+    post_id에 해당하는 게시물을 가져옴
+     */
     public Post getPost(BigInteger post_id) {
         return postRepository.findById(post_id)
                 .orElseThrow(() ->
                         new IllegalArgumentException("post not found"));
     }
 
+    /* 게시물 등록
+    user_id로 User정보(user, nickname)을, RequestDTO로 게시물 정보(제목, 내용, 이미지URL)를 가져와 DB에 저장함
+     */
     @Transactional
-    public Post createPost(Integer user_id, CreateOrUpdatePostRequest request) {
+    public Post createPost(Integer user_id, CreateOrUpdatePostRequest dto) {
         User user = userRepository.findById(user_id)
                 .orElseThrow(() ->
                         new IllegalArgumentException("user not found"));
         Post post = new Post(user,
                 user.getNickname(),
-                request.getTitle(),
-                request.getContent(),
-                request.getImage_url());
+                dto.getTitle(),
+                dto.getContent(),
+                dto.getImage_url());
         return postRepository.save(post);
     }
 
+    /* 게시물 수정
+    RequestDTO로 게시물 정보(제목, 내용, 이미지URL)를 가져오고, 이를 post_id에 해당하는 post에 적용함
+     */
     @Transactional
-    public Post updatePost(BigInteger post_id, CreateOrUpdatePostRequest request) {
+    public Post updatePost(BigInteger post_id, CreateOrUpdatePostRequest dto) {
         Post post = postRepository.findById(post_id)
                 .orElseThrow(() ->
                         new IllegalArgumentException("post not found"));
-        post.setTitle(request.getTitle());
-        post.setContent(request.getContent());
-        post.setImage_url(request.getImage_url());
+        post.setTitle(dto.getTitle());
+        post.setContent(dto.getContent());
+        post.setImage_url(dto.getImage_url());
         return post;
     }
 
+    // 게시물 삭제
     @Transactional
     public void deletePost(BigInteger post_id) {
         Post post = postRepository.findById(post_id)
