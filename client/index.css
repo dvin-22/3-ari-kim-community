@@ -1,61 +1,19 @@
-/* 공통 Header */
-
-/* 뒤로가기 버튼, 프로필 아이콘 숨김 */
-#back-button,
-#profile-container {
-    display: none;
-}
-
-/* 드롭다운 메뉴 */
-.profile-container {
-    position: relative;
-}
-
-.user-profile {
-    width: 40px;
-    height: 40px;
-    background-color: #e0e0e0;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 50px;
-    right: 0;
-    background-color: white;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
-    border-radius: 8px;
-    z-index: 1;
-}
-
-/* JS .show 클래스가 추가됐을 경우 */
-.dropdown-menu.show {
-    display: block;
-}
-
-.dropdown-menu ul {
-    list-style: none;
+/*=============== 공통 요소 ================*/
+body {
+    font-family: sans-serif;
+    background-color: #f0f2f5;
     margin: 0;
-    padding: 10px 0;
+    color: #212529;
 }
 
-.dropdown-menu a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    font-size: 14px;
-}
-
-.dropdown-menu a:hover {
-    background-color: #f1f1f1;
+.container {
+    max-width: 800px; /* 화면이 커져도 최대 너비 800px 유지 */
+    margin: 0 auto; /* 페이지 중앙 정렬 */
+    padding: 0 20px;
 }
 
 
-/* 로그인, 회원가입 */
+/*==================== 로그인, 회원가입 =====================*/
 
 .form-container {
     max-width: 400px;
@@ -129,4 +87,128 @@
 
 .form-link:hover {
     text-decoration: underline;
+}
+
+
+/* ===================== 게시물 목록 ====================== */
+
+.intro-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 20px; 
+    text-align: center;
+}
+
+.intro-text h2 {
+    font-size: 18px;
+    font-weight: normal;
+    color: #495057;
+    margin: 5px 0;
+}
+
+/* 게시글 작성 버튼 */
+.create-post-button {
+    background-color: #ACA0EB;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.2s;
+    flex-shrink: 0;margin-top: 15px;
+}
+
+.create-post-button:hover {
+    background-color: #7F6AEE;
+}
+
+/* 게시글 아이템 */
+.post-item {
+    display: block;
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 5px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s;
+}
+
+.post-item:hover {
+    transform: translateY(-5px); /* 살짝 떠오르는 효과 */
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+}
+
+.post-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.modified-tag {
+    font-size: 12px;
+    color: #868e96;
+    flex-shrink: 0;
+}
+
+.post-date {
+    font-size: 13px;
+    color: #868e96;
+}
+
+.post-meta {
+    display: flex;
+    justify-content: space-between; /* 통계는 왼쪽, 날짜는 오른쪽 */
+    align-items: center;
+    font-size: 13px;
+    color: #868e96;
+    margin-bottom: 20px;
+}
+
+.post-meta-stats span {
+    margin-right: 12px;
+}
+
+.post-footer {
+    border-top: 1px solid #f1f3f5;
+    padding-top: 15px;
+    padding-bottom: 10px;
+}
+
+.post-author {
+    display: flex;
+    align-items: center;
+}
+
+.author-avatar {
+    width: 28px;
+    height: 28px;
+    background-color: #e9ecef;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.author-name {
+    font-size: 14px;
+    color: #495057;
+}
+
+/* 인피니티 스크롤 */
+.loader {
+    text-align: center;
+    padding: 20px;
+    color: #868e96;
 }
