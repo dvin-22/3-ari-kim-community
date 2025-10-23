@@ -5,6 +5,8 @@ import kr.adapterz.ari_community.domain.post.dto.request.CreateOrUpdatePostReque
 import kr.adapterz.ari_community.domain.post.dto.response.GetPostListResponse;
 import kr.adapterz.ari_community.domain.user.User;
 import kr.adapterz.ari_community.domain.user.UserRepository;
+import kr.adapterz.ari_community.global.exception.CustomException;
+import kr.adapterz.ari_community.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +31,7 @@ public class PostService {
         Slice<Post> postSlice;
         Pageable pageable = PageRequest.of(0, size);
 
-        if (cursorId == null) { // 최초 조회시 예외 처리
+        if (cursorId == null) { // 최초 조회시
             postSlice = postRepository.findAllOrderByIdAsc(pageable);
         } else {
             postSlice = postRepository.findAllByIdGreaterThanOrderByIdAsc(cursorId, pageable);
@@ -43,23 +45,21 @@ public class PostService {
      */
     public Post getPost(BigInteger post_id) {
         return postRepository.findById(post_id)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("post not found"));
+                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
     }
 
     /* 게시물 등록
     user_id로 User정보(user, nickname)을, RequestDTO로 게시물 정보(제목, 내용, 이미지URL)를 가져와 DB에 저장함
      */
     @Transactional
-    public Post createPost(Integer user_id, CreateOrUpdatePostRequest dto) {
+    public Post createPost(Integer user_id, CreateOrUpdatePostRequest request) {
         User user = userRepository.findById(user_id)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("user not found"));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         Post post = new Post(user,
                 user.getNickname(),
-                dto.getTitle(),
-                dto.getContent(),
-                dto.getImage_url());
+                request.getTitle(),
+                request.getContent(),
+                request.getImage_url());
         return postRepository.save(post);
     }
 
@@ -67,13 +67,12 @@ public class PostService {
     RequestDTO로 게시물 정보(제목, 내용, 이미지URL)를 가져오고, 이를 post_id에 해당하는 post에 적용함
      */
     @Transactional
-    public Post updatePost(BigInteger post_id, CreateOrUpdatePostRequest dto) {
+    public Post updatePost(BigInteger post_id, CreateOrUpdatePostRequest request) {
         Post post = postRepository.findById(post_id)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("post not found"));
-        post.setTitle(dto.getTitle());
-        post.setContent(dto.getContent());
-        post.setImage_url(dto.getImage_url());
+                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
+        post.setTitle(request.getTitle());
+        post.setContent(request.getContent());
+        post.setImage_url(request.getImage_url());
         return post;
     }
 
@@ -81,8 +80,7 @@ public class PostService {
     @Transactional
     public void deletePost(BigInteger post_id) {
         Post post = postRepository.findById(post_id)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("post not found"));
+                .orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
         postRepository.delete(post);
     }
 
