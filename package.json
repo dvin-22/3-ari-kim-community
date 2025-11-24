@@ -1,0 +1,28 @@
+{
+  "name": "3-ari-kim-community",
+  "version": "1.0.0",
+  "description": "카카오테크 부트캠프 3기 - 개인 프로젝트 - ari.kim(김다인)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dvin-22/3-ari-kim-community.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dvin-22/3-ari-kim-community/issues"
+  },
+  "homepage": "https://github.com/dvin-22/3-ari-kim-community#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0",
+    "supertest": "^7.1.4"
+  }
+}
